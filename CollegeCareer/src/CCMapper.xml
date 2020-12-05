@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- CC SQL -->
+<mapper namespace="collegeCareer.dao.CCMapper">
+
+<!-- 1. 전공등록 -->
+<insert id="insertMajor" parameterType="Major">
+	insert into cc_major(
+	    courseNo
+	    , courseName
+	    , profName
+	    , courseCredit
+	    , track
+	    , gradeRequired
+	    , score
+	)values(
+	    #{courseNo}
+	    ,#{courseName}
+	    ,#{profName}
+	    ,#{courseCredit}
+	    ,#{track}
+	    ,#{gradeRequired}
+	    ,#{score}
+	)
+</insert>
+
+<!-- 1-2. 교양등록 -->
+<insert id="insertLibArts">
+insert into cc_libArts(
+    courseNo
+    , courseName
+    , profName
+    , courseCredit
+    , track
+    , gradeRequired
+    , score
+)values(
+    #{courseNo}
+    ,#{courseName}
+    ,#{profName}
+    ,#{courseCredit}
+    ,#{track}
+    ,#{gradeRequired}
+    ,#{score}
+)
+</insert>
+
+<!-- 00. 전공검색 -->
+<select id="getMajor" parameterType="String" resultType="Major">
+select 
+    courseNo
+    , courseName
+    , profName
+    , courseCredit
+    , track
+    , gradeRequired
+    , score
+from cc_major
+where courseNO = #{String}
+</select>
+
+<!-- 00. 교양검색 -->
+<select id="getLibArts" parameterType="String" resultType="LibArts">
+	select 
+	    courseNo
+	    , courseName
+	    , profName
+	    , courseCredit
+	    , track
+	    , gradeRequired
+	    , score
+	from cc_libArts
+	where courseNO = #{String}
+</select>
+
+<!-- 2-1. 전공과목 조회 -->
+<select id="listMajor" resultType="Major">
+	select 
+	    courseNo
+	    , courseName
+	    , profName
+	    , courseCredit
+	    , track
+	    , gradeRequired
+	    , score
+	from cc_major
+	order by courseNo
+</select>
+
+<!-- 2-2. 교양과목 조회 -->
+<select id="listLibArts" resultType="LibArts">
+	select 
+	    courseNo
+	    , courseName
+	    , profName
+	    , courseCredit
+	    , track
+	    , gradeRequired
+	    , score
+	from cc_libArts
+	order by courseNo
+</select>
+
+<!-- 3. 전공수업 수정 -->
+<update id="updateMajor" parameterType="Major">
+	update cc_major set
+	    courseName = #{courseName}
+	    , profName = #{profName}
+	    , courseCredit = #{courseCredit}
+	    , track = #{track}
+	    , gradeRequired = #{gradeRequired}
+	    , score = #{score}
+	where courseNo = #{courseNo}
+</update>
+
+<!-- 3-2.  교양수업 수정 -->
+<update id="updateLibArts" parameterType="LibArts">
+	update cc_libarts set
+	    courseName = #{courseName}
+	    , profName = #{profName}
+	    , courseCredit = #{courseCredit}
+	    , track = #{track}
+	    , gradeRequired = #{gradeRequired}
+	    , score = #{score}
+	where courseNo = #{courseNo}
+</update>
+
+<!-- 4-1. 전공수업 삭제 -->
+<delete id="deleteMajor" parameterType="String">
+	delete from cc_major
+	where courseNo = #{String}
+</delete>
+
+<!-- 4-2. 교양수업 삭제 -->
+<delete id="deleteLibArts" parameterType="String">
+	delete from cc_libArts
+	where courseNo = #{String}
+</delete>
+
+<!-- 5. 학생등록 -->
+<insert id="insertStudent" parameterType="Student">
+	insert into CC_STUDENT(
+	    studentID              
+	    , version               
+	    , studentName          
+	    , track                 
+	    , grade                 
+	    , grossCredit           
+	    , grossCreditmajor      
+	    , grossCreditliberal    
+	    , toeic                 
+	    , hsk                   
+	    , jpt    
+	)values(#{studentID}, #{version}, #{studentName}, #{track}
+			, #{grade}, #{grossCredit}, #{grossCreditMajor}
+			, #{grossCreditLiberal}, #{toeic}, #{hsk}, #{jpt})
+</insert>
+
+<!-- 6. 특정 학생 검색 -->
+<select id="getStudent" parameterType="String" resultType="Student">
+	select
+	    studentID
+	    , password              
+	    , version               
+	    , studentname          
+	    , track                 
+	    , grade                 
+	    , grosscredit           
+	    , grosscreditmajor      
+	    , grosscreditliberal    
+	    , toeic                 
+	    , hsk                   
+	    , jpt 
+	from cc_student where studentID = #{studentID}
+</select>
+
+<!-- 7. 학생 전체 조회 -->
+<select id="listStudent" resultType="Student">
+	select
+	    studentid
+	    , password              
+	    , version               
+	    , studentName          
+	    , track                 
+	    , grade                 
+	    , grossCredit           
+	    , grossCreditMajor      
+	    , grossCreditLiberal    
+	    , toeic                 
+	    , hsk                   
+	    , jpt 
+	from cc_student
+	order by studentid
+</select>
+
+<!-- 8. 학생 수정 -->
+<update id="updateStudent" parameterType="Student">
+	update 
+	    cc_student
+	set         
+	    version = #{version}
+	    , password = #{password}
+	    , studentName = #{studentName}          
+	    , track = #{track}
+	    , grade = #{grade}      
+	    , grossCredit = #{grossCredit}           
+	    , grossCreditMajor = #{grossCreditMajor}
+	    , grossCreditLiberal = #{grossCreditLiberal}
+	    , toeic = #{toeic}
+	    , hsk = #{hsk}         
+	    , jpt =#{jpt}
+	where
+	    StudentID = #{studentID}
+</update>
+
+<!-- 9. 학생 삭제 -->
+<delete id="deleteStudent" parameterType="String">
+	delete from cc_student
+	where studentid = #{studentID}
+</delete>
+
+<!-- 10. 졸업요건 등록 -->
+<insert id="insertGradReq" parameterType="GradReq">
+	INSERT INTO CC_GRADREQ 
+	VALUES (
+		#{version}
+		,#{gradGrossCredit}
+		,#{gradMajorCredit}
+		,#{gradLiberalCredit}
+		,#{toeic}
+		,#{hsk}
+		,#{jpt})
+</insert>
+
+<!-- 11. 졸업요건 전체조회 -->
+<select id="listGradReq" resultType="GradReq">
+	select
+	    version
+	    , gradGrossCredit
+	    , gradMajorCredit
+	    , gradLiberalCredit
+	    , toeic
+	    , hsk
+	    , jpt
+	from 
+	    CC_GRADREQ
+	order by
+	    version
+</select>
+
+<!-- 12. 졸업요건 수정 -->
+<update id="updateGradReq" parameterType="GradReq">
+	update
+	    CC_Gradreq
+	set
+	    gradGrossCredit = #{gradGrossCredit}
+	    , gradMajorCredit = #{gradMajorCredit}
+	    , gradLiberalCredit = #{gradLiberalCredit}
+	    , toeic = #{toeic}
+	    , hsk = #{hsk}
+	    , jpt = #{jpt}
+	where
+	    version = #{version}
+</update>
+
+<!-- 12-1.특정 졸업요건만 가져오기 -->
+<select id="getGradReq" parameterType="Double" resultType="GradReq">
+	select
+	    version
+	    , gradGrossCredit
+	    , gradMajorCredit
+	    , gradLiberalCredit
+	    , toeic
+	    , hsk
+	    , jpt
+	from 
+	    CC_GRADREQ
+	where
+	    version = #{version}
+
+</select>
+
+<!-- 13. 졸업요건 삭제 -->
+<delete id="deleteGradReq" parameterType="Double">
+	delete from CC_GradREQ
+	where version = #{version}
+
+</delete>
+
+<!-- 3.전공 추천 -->
+<select id="recommendMajor" parameterType="Student" resultType="Major">
+select 
+    courseNo
+    , courseName
+    , profName
+    , courseCredit
+    , track
+    , gradeRequired
+    , score
+from cc_major
+where 
+    gradeRequired &lt;= #{grade} and track = #{track} and 
+    substr(courseNo,4,2) not in 
+    			(select substr(mcourseNo,4,2)
+                from cc_enroll
+                where studentid = ${studentID})
+order by score
+
+</select>
+
+</mapper>
